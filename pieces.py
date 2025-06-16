@@ -59,6 +59,7 @@ class Pawn(Piece):
     def get_valid_moves(self, pos, board):
         x, y = pos
         moves = []
+        # dir: 흰색은 위(-1), 검은색은 아래(+1) 방향으로 전진
         dir = -1 if self.color == 'white' else 1
         # 1) 한 칸 전진
         if 0 <= y + dir < 8 and board.grid[y + dir][x] is None:
@@ -85,7 +86,7 @@ class Pawn(Piece):
 class Rook(Piece):
     def __init__(self, color):
         super().__init__(color, 'rook')
-    # 4방향 슬라이딩
+    # 4방향 슬라이딩 : 빈 칸이면 계속, 상대 기물이면 그 칸까지 이동하고 “벽”처럼 멈춤, 같은 색 기물이 나오면 그 방향은 중단
     def get_valid_moves(self, pos, board):
         moves = []
         for dx, dy in [(1,0),(-1,0),(0,1),(0,-1)]:
@@ -104,7 +105,7 @@ class Rook(Piece):
 class Bishop(Piece):
     def __init__(self, color):
         super().__init__(color, 'bishop')
-    # 4대각선 슬라이딩
+    # 4대각선 슬라이딩 : 룩과 마찬가지로, 빈 칸은 지나가고 적 기물이 있으면 멈춤
     def get_valid_moves(self, pos, board):
         moves = []
         for dx, dy in [(1,1),(1,-1),(-1,1),(-1,-1)]:
@@ -123,7 +124,7 @@ class Bishop(Piece):
 class Knight(Piece):
     def __init__(self, color):
         super().__init__(color, 'knight')
-    # 8가지 L자 점프
+    # 8가지 L자 점프 : 장애물 무시, 중간 칸 체크 없이 점프, 빈 칸·적 기물 모두 이동 가능
     def get_valid_moves(self, pos, board):
         moves = []
         for dx, dy in [(2,1),(2,-1),(-2,1),(-2,-1),(1,2),(1,-2),(-1,2),(-1,-2)]:
